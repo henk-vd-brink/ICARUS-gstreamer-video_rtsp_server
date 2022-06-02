@@ -25,20 +25,18 @@ RUN apt-get update \
         gstreamer1.0-gtk3 \
         gstreamer1.0-qt5 \ 
         gstreamer1.0-pulseaudio \
+        libgstrtspserver-1.0-0 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get autoclean
 
 WORKDIR ${HOME}/opt
 
 RUN git clone git://anongit.freedesktop.org/gstreamer/gst-rtsp-server \
-    && cd gst-rtsp-server \
-    && git checkout remotes/origin/1.2 \
-    && ./autogen.sh --noconfigure && GST_PLUGINS_GOOD_DIR=$(pkg-config --variable=pluginsdir gstreamer-plugins-bad-1.0) ./configure \
-    && make \
-    && make install
-
-RUN apt-get update -y
-RUN apt-get install -y libgstrtspserver-1.0-0
+        && cd gst-rtsp-server \
+        && git checkout remotes/origin/1.2 \
+        && ./autogen.sh --noconfigure && GST_PLUGINS_GOOD_DIR=$(pkg-config --variable=pluginsdir gstreamer-plugins-bad-1.0) ./configure \
+        && make \
+        && make install
 
 WORKDIR ${HOME}
 
