@@ -24,6 +24,7 @@ int main (int argc, char *argv[])
       "Example: \"( videotestsrc ! x264enc ! rtph264pay name=pay0 pt=96 )\"");
   g_option_context_add_main_entries (optctx, entries, NULL);
   g_option_context_add_group (optctx, gst_init_get_option_group ());
+  
   if (!g_option_context_parse (optctx, &argc, &argv, &error)) {
     g_printerr ("Error parsing options: %s\n", error->message);
     g_option_context_free (optctx);

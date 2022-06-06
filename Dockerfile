@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ENV HOME /code
+ENV HOME /home/gstreamer_user
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe
@@ -44,8 +44,9 @@ ADD Makefile ${HOME}/Makefile
 COPY src ${HOME}/src
 
 RUN gcc -Wall src/main.cpp -o main $(pkg-config --cflags --libs gstreamer-1.0 gstreamer-rtsp-server-1.0)
+# RUN make
 
 ENV GST_DEBUG=2
 
-CMD ["./main", "( v4l2src device=/dev/video0 ! video/x-raw,height=360,width=640 ! decodebin ! videoconvert ! x264enc tune=zerolatency byte-stream=true bitrate=2000 ! rtph264pay name=pay0 pt=96 )"]
+CMD ["./main", "( v4l2src device=/dev/video0 ! video/x-raw,height=360,width=640 ! decodebin ! videoconvert ! videoconvert ! video/x-raw,format=I420 ! x264enc tune=zerolatency byte-stream=true bitrate=2000 ! rtph264pay name=pay0 pt=96 )"]
 
